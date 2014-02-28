@@ -198,6 +198,13 @@ def test_read_write_epochs():
     # Test that one can drop channels on read file
     epochs_read5.drop_channels(epochs_read5.ch_names[:1])
 
+def test_load_old_epochs():
+    # Can we read a epochs file that doesn't have the selection and
+    # drop_log fields (introduced in 0.8)?
+    filename = op.join(base_dir, 'epochs_0.7.1.fif')
+    old_epochs = read_epochs(filename)
+    assert_equal(old_epochs.drop_log, [])
+    assert_equal(old_epochs.selection, range(len(old_epochs)))
 
 def test_epochs_proj():
     """Test handling projection (apply proj in Raw or in Epochs)
